@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="770" viewBox="0 0 1000 770" role="img" aria-label="The classic RAG pipeline and the three places it breaks">
+  <title>Classic RAG pipeline and its three failure modes</title>
+  <desc>Indexing lane: source documents to chunker to embedding model to vector store. Retrieval lane: user query to embedding model to retriever to top-k chunks. Generation lane: LLM context window to LLM to answer. Three numbered break points mark multi-hop queries, missing relationship awareness, and chunk loss with ambiguity.</desc>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#98968f"/>
+    </marker>
+    <style>
+      .t   { font-family: "Segoe UI", Inter, system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+      .h1  { font-size: 19px; font-weight: 700; fill: #1c1c1a; }
+      .sub { font-size: 12px; fill: #6f6d67; }
+      .lane{ font-size: 10.5px; font-weight: 700; fill: #8a8880; letter-spacing: 1.1px; }
+      .bt  { font-size: 12.5px; font-weight: 700; fill: #1c1c1a; }
+      .bs  { font-size: 10px; fill: #6f6d67; }
+      .edge{ fill: none; stroke: #98968f; stroke-width: 1.6; }
+      .elbl{ font-size: 9.5px; fill: #8a8880; font-style: italic; }
+      .bn  { font-size: 11px; font-weight: 700; fill: #ffffff; }
+      .ct  { font-size: 13px; font-weight: 700; fill: #1c1c1a; }
+      .ck  { font-size: 9.5px; font-weight: 700; fill: #b3261e; letter-spacing: 0.6px; }
+      .cb  { font-size: 10.5px; fill: #3d3b37; }
+      .ci  { font-size: 10.5px; fill: #3d3b37; font-style: italic; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="770" fill="#ffffff"/>
+
+  <g class="t">
+    <text x="40" y="38" class="h1">The classic RAG pipeline - and the three places it breaks</text>
+    <text x="40" y="58" class="sub">Retrieve relevant chunks, augment the prompt, generate a grounded answer. Solid for single-hop lookups; brittle beyond them.</text>
+
+    <!-- ============ LANE 1: INDEXING ============ -->
+    <rect x="24" y="70" width="952" height="112" rx="10" fill="#f7f7f5"/>
+    <text x="40" y="90" class="lane">INDEXING - OFFLINE, ONCE PER CORPUS</text>
+
+    <rect x="40"  y="100" width="190" height="66" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="135" y="128" class="bt" text-anchor="middle">Source Documents</text>
+    <text x="135" y="145" class="bs" text-anchor="middle">PDFs, web pages, text files</text>
+
+    <rect x="275" y="100" width="190" height="66" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="370" y="128" class="bt" text-anchor="middle">Chunker</text>
+    <text x="370" y="145" class="bs" text-anchor="middle">splits text into small pieces</text>
+
+    <rect x="510" y="100" width="190" height="66" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="605" y="128" class="bt" text-anchor="middle">Embedding Model</text>
+    <text x="605" y="145" class="bs" text-anchor="middle">text -&gt; vectors</text>
+
+    <rect x="745" y="100" width="190" height="66" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="840" y="128" class="bt" text-anchor="middle">Vector Store</text>
+    <text x="840" y="145" class="bs" text-anchor="middle">chunk vectors, no edges</text>
+
+    <path class="edge" d="M 230 133 L 268 133" marker-end="url(#arw)"/>
+    <path class="edge" d="M 465 133 L 503 133" marker-end="url(#arw)"/>
+    <path class="edge" d="M 700 133 L 738 133" marker-end="url(#arw)"/>
+
+    <!-- ============ LANE 2: RETRIEVAL ============ -->
+    <rect x="24" y="230" width="952" height="112" rx="10" fill="#f7f7f5"/>
+    <text x="40" y="250" class="lane">RETRIEVAL - AT QUERY TIME</text>
+
+    <rect x="40"  y="260" width="190" height="66" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.4"/>
+    <text x="135" y="288" class="bt" text-anchor="middle">User Query</text>
+    <text x="135" y="305" class="bs" text-anchor="middle">natural language question</text>
+
+    <rect x="275" y="260" width="190" height="66" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.4"/>
+    <text x="370" y="288" class="bt" text-anchor="middle">Embedding Model</text>
+    <text x="370" y="305" class="bs" text-anchor="middle">the same model as indexing</text>
+
+    <rect x="510" y="260" width="190" height="66" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.4"/>
+    <text x="605" y="288" class="bt" text-anchor="middle">Retriever</text>
+    <text x="605" y="305" class="bs" text-anchor="middle">one similarity jump, not three</text>
+
+    <rect x="745" y="260" width="190" height="66" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.4"/>
+    <text x="840" y="288" class="bt" text-anchor="middle">Top-k Chunks</text>
+    <text x="840" y="305" class="bs" text-anchor="middle">isolated islands of text</text>
+
+    <path class="edge" d="M 230 293 L 268 293" marker-end="url(#arw)"/>
+    <path class="edge" d="M 465 293 L 503 293" marker-end="url(#arw)"/>
+    <path class="edge" d="M 700 293 L 738 293" marker-end="url(#arw)"/>
+
+    <!-- vector store feeds the retriever -->
+    <path class="edge" stroke-dasharray="5 4" d="M 840 166 L 840 206 L 605 206 L 605 253" marker-end="url(#arw)"/>
+    <text x="828" y="201" class="elbl" text-anchor="end">nearest-neighbour lookup over stored vectors</text>
+
+    <!-- ============ LANE 3: GENERATION ============ -->
+    <rect x="24" y="390" width="952" height="112" rx="10" fill="#f7f7f5"/>
+    <text x="40" y="410" class="lane">GENERATION</text>
+
+    <rect x="275" y="420" width="190" height="66" rx="8" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.4"/>
+    <text x="370" y="448" class="bt" text-anchor="middle">LLM Context Window</text>
+    <text x="370" y="465" class="bs" text-anchor="middle">question + retrieved chunks</text>
+
+    <rect x="510" y="420" width="190" height="66" rx="8" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.4"/>
+    <text x="605" y="448" class="bt" text-anchor="middle">LLM</text>
+    <text x="605" y="465" class="bs" text-anchor="middle">generates from the context</text>
+
+    <rect x="745" y="420" width="190" height="66" rx="8" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.4"/>
+    <text x="840" y="448" class="bt" text-anchor="middle">Answer</text>
+    <text x="840" y="465" class="bs" text-anchor="middle">grounded in what was found</text>
+
+    <path class="edge" d="M 465 453 L 503 453" marker-end="url(#arw)"/>
+    <path class="edge" d="M 700 453 L 738 453" marker-end="url(#arw)"/>
+    <path class="edge" d="M 840 326 L 840 364 L 370 364 L 370 413" marker-end="url(#arw)"/>
+
+    <!-- ============ BREAK BADGES ============ -->
+    <g>
+      <circle cx="698" cy="262" r="11.5" fill="#b3261e"/>
+      <text x="698" y="266" class="bn" text-anchor="middle">1</text>
+      <circle cx="933" cy="102" r="11.5" fill="#b3261e"/>
+      <text x="933" y="106" class="bn" text-anchor="middle">2</text>
+      <circle cx="463" cy="102" r="11.5" fill="#b3261e"/>
+      <text x="463" y="106" class="bn" text-anchor="middle">3</text>
+    </g>
+
+    <line x1="40" y1="528" x2="960" y2="528" stroke="#e4e2dc" stroke-width="1"/>
+
+    <!-- ============ FAILURE MODE CARDS ============ -->
+    <g>
+      <rect x="40" y="548" width="290" height="192" rx="9" fill="#fdeeed" stroke="#e6b8b4" stroke-width="1.2"/>
+      <circle cx="66" cy="574" r="11.5" fill="#b3261e"/>
+      <text x="66" y="578" class="bn" text-anchor="middle">1</text>
+      <text x="88" y="579" class="ct">Multi-hop queries</text>
+      <text x="58" y="604" class="ck">ASKED</text>
+      <text x="58" y="620" class="ci">"Which researchers influenced the</text>
+      <text x="58" y="634" class="ci">methodology in this paper, and what</text>
+      <text x="58" y="648" class="ci">institutions are they affiliated with?"</text>
+      <text x="58" y="670" class="ck">RAG DOES</text>
+      <text x="58" y="686" class="cb">Retrieves the chunk closest to the query</text>
+      <text x="58" y="700" class="cb">text - maybe the abstract - and stops.</text>
+      <text x="58" y="716" class="ck">NEEDED</text>
+      <text x="58" y="732" class="cb">paper -&gt; author A -&gt; institution X -&gt; author B</text>
+
+      <rect x="355" y="548" width="290" height="192" rx="9" fill="#fdeeed" stroke="#e6b8b4" stroke-width="1.2"/>
+      <circle cx="381" cy="574" r="11.5" fill="#b3261e"/>
+      <text x="381" y="578" class="bn" text-anchor="middle">2</text>
+      <text x="403" y="579" class="ct">No relationship awareness</text>
+      <text x="373" y="604" class="ck">ASKED</text>
+      <text x="373" y="620" class="ci">"How are Company A and Company B</text>
+      <text x="373" y="634" class="ci">connected?"</text>
+      <text x="373" y="656" class="ck">RAG DOES</text>
+      <text x="373" y="672" class="cb">Finds chunks where both names appear.</text>
+      <text x="373" y="686" class="cb">But co-occurrence is not connection.</text>
+      <text x="373" y="702" class="ck">NEEDED</text>
+      <text x="373" y="718" class="cb">A acquired X, founded by Y, who sits on</text>
+      <text x="373" y="732" class="cb">B's board - a traversal of edges.</text>
+
+      <rect x="670" y="548" width="290" height="192" rx="9" fill="#fdeeed" stroke="#e6b8b4" stroke-width="1.2"/>
+      <circle cx="696" cy="574" r="11.5" fill="#b3261e"/>
+      <text x="696" y="578" class="bn" text-anchor="middle">3</text>
+      <text x="718" y="579" class="ct">Chunk loss &amp; ambiguity</text>
+      <text x="688" y="604" class="ck">ASKED</text>
+      <text x="688" y="620" class="ci">"Tell me about the Apple announcement."</text>
+      <text x="688" y="634" class="ci">Which Apple? Which announcement? When?</text>
+      <text x="688" y="656" class="ck">RAG DOES</text>
+      <text x="688" y="672" class="cb">Splits at a fixed token count, so the</text>
+      <text x="688" y="686" class="cb">answer straddles a boundary - then</text>
+      <text x="688" y="700" class="cb">matches text rather than intent.</text>
+      <text x="688" y="716" class="ck">NEEDED</text>
+      <text x="688" y="732" class="cb">Boundary-aware context + disambiguation.</text>
+    </g>
+  </g>
+</svg>

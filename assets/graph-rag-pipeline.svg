@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="790" viewBox="0 0 1000 790" role="img" aria-label="The Graph RAG pipeline and how traversal answers multi-hop queries">
+  <title>The Graph RAG pipeline</title>
+  <desc>Indexing builds two stores in parallel: source documents go through entity and relation extraction into a knowledge graph, and through a chunker and embedding model into a vector index. At query time, graph traversal and vector retrieval run together and return a retrieved subgraph plus supporting passages to the LLM. Two worked examples show multi-hop questions answered as edge traversals.</desc>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#98968f"/>
+    </marker>
+    <marker id="arwg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f7d6f"/>
+    </marker>
+    <style>
+      .t    { font-family: "Segoe UI", Inter, system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+      .h1   { font-size: 19px; font-weight: 700; fill: #1c1c1a; }
+      .sub  { font-size: 12px; fill: #6f6d67; }
+      .lane { font-size: 10.5px; font-weight: 700; fill: #8a8880; letter-spacing: 1.1px; }
+      .note { font-size: 10px; fill: #8a8880; font-style: italic; }
+      .bt   { font-size: 12.5px; font-weight: 700; fill: #1c1c1a; }
+      .bs   { font-size: 10px; fill: #6f6d67; }
+      .edge { fill: none; stroke: #98968f; stroke-width: 1.6; }
+      .gedge{ fill: none; stroke: #2f7d6f; stroke-width: 1.8; }
+      .pill { font-size: 9px; font-weight: 700; fill: #ffffff; letter-spacing: 0.8px; }
+      .exq  { font-size: 11px; font-weight: 700; fill: #1c1c1a; }
+      .nd   { font-size: 11.5px; font-weight: 700; fill: #1c4a42; }
+      .el   { font-size: 9.5px; fill: #2f7d6f; font-style: italic; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="790" fill="#ffffff"/>
+
+  <g class="t">
+    <text x="40" y="38" class="h1">Graph RAG - retrieving over relationships, not just text</text>
+    <text x="40" y="58" class="sub">The one shift everything follows from: the unit of retrieval changes from a chunk to a subgraph. Vanilla RAG finds what is similar; Graph RAG finds what is connected.</text>
+
+    <!-- ============ INDEXING ============ -->
+    <rect x="24" y="76" width="952" height="224" rx="10" fill="#f7f7f5"/>
+    <text x="40" y="96" class="lane">INDEXING - TWO STORES, BUILT IN PARALLEL</text>
+    <text x="404" y="96" class="note">green = what Graph RAG adds; the lower rail is unchanged from vanilla RAG</text>
+
+    <rect x="44" y="170" width="160" height="66" rx="8" fill="#f2f1ee" stroke="#b6b3ab" stroke-width="1.4"/>
+    <text x="124" y="198" class="bt" text-anchor="middle">Source Documents</text>
+    <text x="124" y="215" class="bs" text-anchor="middle">PDFs, web pages, text</text>
+
+    <!-- upper rail: the graph -->
+    <rect x="250" y="112" width="230" height="66" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="365" y="140" class="bt" text-anchor="middle">Entity &amp; Relation Extraction</text>
+    <text x="365" y="157" class="bs" text-anchor="middle">an LLM pulls out entities + relations</text>
+    <rect x="424" y="103" width="42" height="17" rx="8.5" fill="#2f7d6f"/>
+    <text x="445" y="115" class="pill" text-anchor="middle">NEW</text>
+
+    <rect x="520" y="112" width="230" height="66" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="635" y="140" class="bt" text-anchor="middle">Knowledge Graph</text>
+    <text x="635" y="157" class="bs" text-anchor="middle">entities = nodes, relations = edges</text>
+    <rect x="694" y="103" width="42" height="17" rx="8.5" fill="#2f7d6f"/>
+    <text x="715" y="115" class="pill" text-anchor="middle">NEW</text>
+
+    <!-- lower rail: the vector index, as before -->
+    <rect x="250" y="224" width="140" height="66" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="320" y="252" class="bt" text-anchor="middle">Chunker</text>
+    <text x="320" y="269" class="bs" text-anchor="middle">fixed-size pieces</text>
+
+    <rect x="420" y="224" width="140" height="66" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="490" y="252" class="bt" text-anchor="middle">Embedding Model</text>
+    <text x="490" y="269" class="bs" text-anchor="middle">text -&gt; vectors</text>
+
+    <rect x="590" y="224" width="160" height="66" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="670" y="252" class="bt" text-anchor="middle">Vector Index</text>
+    <text x="670" y="269" class="bs" text-anchor="middle">you keep this too</text>
+
+    <path class="edge" d="M 204 190 C 226 190 222 145 243 145" marker-end="url(#arw)"/>
+    <path class="edge" d="M 204 216 C 226 216 222 257 243 257" marker-end="url(#arw)"/>
+    <path class="edge" d="M 480 145 L 513 145" marker-end="url(#arw)"/>
+    <path class="edge" d="M 390 257 L 413 257" marker-end="url(#arw)"/>
+    <path class="edge" d="M 560 257 L 583 257" marker-end="url(#arw)"/>
+
+    <path class="edge" d="M 758 145 L 772 145 L 772 257 L 758 257"/>
+    <text x="784" y="187" class="note">you keep both</text>
+    <text x="784" y="201" class="note">stores, running</text>
+    <text x="784" y="215" class="note">side by side</text>
+
+    <!-- ============ RETRIEVAL + GENERATION ============ -->
+    <rect x="24" y="320" width="952" height="224" rx="10" fill="#f7f7f5"/>
+    <text x="40" y="340" class="lane">RETRIEVAL + GENERATION - TRAVERSAL AND SIMILARITY, TOGETHER</text>
+
+    <rect x="44" y="414" width="160" height="66" rx="8" fill="#f2f1ee" stroke="#b6b3ab" stroke-width="1.4"/>
+    <text x="124" y="442" class="bt" text-anchor="middle">User Query</text>
+    <text x="124" y="459" class="bs" text-anchor="middle">natural language</text>
+
+    <rect x="250" y="356" width="210" height="66" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="355" y="384" class="bt" text-anchor="middle">Graph Traversal</text>
+    <text x="355" y="401" class="bs" text-anchor="middle">follows edges in the Knowledge Graph</text>
+    <rect x="404" y="347" width="42" height="17" rx="8.5" fill="#2f7d6f"/>
+    <text x="425" y="359" class="pill" text-anchor="middle">NEW</text>
+
+    <rect x="250" y="458" width="210" height="66" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="355" y="486" class="bt" text-anchor="middle">Vector Retrieval</text>
+    <text x="355" y="503" class="bs" text-anchor="middle">similarity over the Vector Index</text>
+
+    <rect x="510" y="407" width="220" height="66" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="620" y="435" class="bt" text-anchor="middle">Retrieved Subgraph</text>
+    <text x="620" y="452" class="bs" text-anchor="middle">connected nodes + their passages</text>
+
+    <rect x="770" y="407" width="180" height="66" rx="8" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.4"/>
+    <text x="860" y="435" class="bt" text-anchor="middle">LLM</text>
+    <text x="860" y="452" class="bs" text-anchor="middle">answer + evidence trail</text>
+
+    <path class="edge" d="M 204 434 C 226 434 222 389 243 389" marker-end="url(#arw)"/>
+    <path class="edge" d="M 204 460 C 226 460 222 491 243 491" marker-end="url(#arw)"/>
+    <path class="edge" d="M 460 389 C 482 389 482 440 503 440" marker-end="url(#arw)"/>
+    <path class="edge" d="M 460 491 C 482 491 482 440 503 440" marker-end="url(#arw)"/>
+    <path class="edge" d="M 730 440 L 763 440" marker-end="url(#arw)"/>
+    <text x="730" y="495" class="note" text-anchor="middle">both run at once - the LLM gets structure, not a flat ranked list of chunks</text>
+
+    <!-- ============ WORKED TRAVERSALS ============ -->
+    <line x1="40" y1="562" x2="960" y2="562" stroke="#e4e2dc" stroke-width="1"/>
+    <text x="40" y="584" class="lane">THE SAME QUERIES FROM VIDEO 1 - NOW ANSWERED AS TRAVERSALS</text>
+
+    <text x="40" y="610" class="exq">1. "Which researchers influenced the methodology in this paper, and what institutions are they affiliated with?"</text>
+    <g>
+      <rect x="40"  y="622" width="150" height="38" rx="19" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.5"/>
+      <text x="115" y="646" class="nd" text-anchor="middle">This Paper</text>
+      <rect x="295" y="622" width="150" height="38" rx="19" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.5"/>
+      <text x="370" y="646" class="nd" text-anchor="middle">Author A</text>
+      <rect x="550" y="622" width="150" height="38" rx="19" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.5"/>
+      <text x="625" y="646" class="nd" text-anchor="middle">Institution X</text>
+      <rect x="805" y="622" width="150" height="38" rx="19" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.5"/>
+      <text x="880" y="646" class="nd" text-anchor="middle">Author B</text>
+      <path class="gedge" d="M 190 641 L 288 641" marker-end="url(#arwg)"/>
+      <text x="242" y="636" class="el" text-anchor="middle">cites</text>
+      <path class="gedge" d="M 445 641 L 543 641" marker-end="url(#arwg)"/>
+      <text x="497" y="636" class="el" text-anchor="middle">affiliated with</text>
+      <path class="gedge" d="M 700 641 L 798 641" marker-end="url(#arwg)"/>
+      <text x="752" y="636" class="el" text-anchor="middle">collaborated with</text>
+    </g>
+
+    <text x="40" y="700" class="exq">2. "How are Company A and Company B connected?"  -  retrieved from structure, not guessed from text proximity.</text>
+    <g>
+      <rect x="40"  y="712" width="150" height="38" rx="19" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.5"/>
+      <text x="115" y="736" class="nd" text-anchor="middle">Company A</text>
+      <rect x="295" y="712" width="150" height="38" rx="19" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.5"/>
+      <text x="370" y="736" class="nd" text-anchor="middle">Subsidiary X</text>
+      <rect x="550" y="712" width="150" height="38" rx="19" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.5"/>
+      <text x="625" y="736" class="nd" text-anchor="middle">Person Y</text>
+      <rect x="805" y="712" width="150" height="38" rx="19" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.5"/>
+      <text x="880" y="736" class="nd" text-anchor="middle">Company B</text>
+      <path class="gedge" d="M 190 731 L 288 731" marker-end="url(#arwg)"/>
+      <text x="242" y="726" class="el" text-anchor="middle">acquired</text>
+      <path class="gedge" d="M 445 731 L 543 731" marker-end="url(#arwg)"/>
+      <text x="497" y="726" class="el" text-anchor="middle">founded by</text>
+      <path class="gedge" d="M 700 731 L 798 731" marker-end="url(#arwg)"/>
+      <text x="752" y="726" class="el" text-anchor="middle">sits on board of</text>
+    </g>
+  </g>
+</svg>
