@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" role="img" aria-label="One query walked through the whole Graph RAG pipeline, using the Dr. John Smith example">
+  <title>Graph RAG walkthrough - one concrete query</title>
+  <desc>CSV records go through data transformation into the knowledge graph. Podcast transcripts are chunked, then in parallel entity extraction pulls out Dr. John Smith, renewable energy and California into the graph, while embeddings go into the vector store. A user question is answered from connected graph facts plus similar transcript chunks, combined by the generative model.</desc>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#98968f"/>
+    </marker>
+    <marker id="arwg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f7d6f"/>
+    </marker>
+    <style>
+      .t    { font-family: "Segoe UI", Inter, system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+      .h1   { font-size: 19px; font-weight: 700; fill: #1c1c1a; }
+      .sub  { font-size: 12px; fill: #6f6d67; }
+      .lane { font-size: 11px; font-weight: 700; fill: #6f6d67; letter-spacing: 1.1px; }
+      .note { font-size: 10px; fill: #8a8880; font-style: italic; }
+      .bt   { font-size: 12.5px; font-weight: 700; fill: #1c1c1a; }
+      .bs   { font-size: 10px; fill: #6f6d67; }
+      .chip { font-size: 10px; font-weight: 600; fill: #1c4a42; }
+      .edge { fill: none; stroke: #98968f; stroke-width: 1.6; }
+      .gedge{ fill: none; stroke: #2f7d6f; stroke-width: 1.6; }
+      .nd   { font-size: 11px; font-weight: 700; fill: #1c4a42; }
+      .el   { font-size: 9px; fill: #2f7d6f; font-style: italic; }
+      .q    { font-size: 12px; font-weight: 600; fill: #1c1c1a; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="720" fill="#ffffff"/>
+
+  <g class="t">
+    <text x="24" y="38" class="h1">One query, walked through the whole pipeline</text>
+    <text x="24" y="58" class="sub">Two kinds of input in, one grounded answer out - with the knowledge graph doing the connecting.</text>
+
+    <!-- ================= INDEXING ================= -->
+    <rect x="24" y="76" width="952" height="324" rx="10" fill="#f7f7f5"/>
+    <text x="44" y="98" class="lane">INDEXING</text>
+
+    <rect x="44" y="120" width="180" height="76" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="134" y="150" class="bt" text-anchor="middle">Structured data</text>
+    <text x="134" y="169" class="bs" text-anchor="middle">CSV records - episode</text>
+    <text x="134" y="182" class="bs" text-anchor="middle">metadata, guest lists</text>
+
+    <rect x="44" y="250" width="180" height="76" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="134" y="280" class="bt" text-anchor="middle">Unstructured data</text>
+    <text x="134" y="299" class="bs" text-anchor="middle">podcast transcripts,</text>
+    <text x="134" y="312" class="bs" text-anchor="middle">hours per episode</text>
+
+    <rect x="256" y="120" width="190" height="76" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="351" y="152" class="bt" text-anchor="middle">Data Transformation</text>
+    <text x="351" y="172" class="bs" text-anchor="middle">schema preserved, rows</text>
+    <text x="351" y="185" class="bs" text-anchor="middle">typed as entities</text>
+
+    <rect x="256" y="250" width="190" height="76" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="351" y="282" class="bt" text-anchor="middle">Chunking</text>
+    <text x="351" y="302" class="bs" text-anchor="middle">transcript split into pieces,</text>
+    <text x="351" y="315" class="bs" text-anchor="middle">each keeping its source ref</text>
+
+    <rect x="478" y="176" width="190" height="116" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="573" y="198" class="bt" text-anchor="middle">Entity Extraction</text>
+    <text x="573" y="214" class="bs" text-anchor="middle">key entities + relationships</text>
+    <rect x="490" y="222" width="166" height="20" rx="10" fill="#ffffff" stroke="#9dc4b9"/>
+    <text x="573" y="236" class="chip" text-anchor="middle">Dr. John Smith</text>
+    <rect x="490" y="246" width="166" height="20" rx="10" fill="#ffffff" stroke="#9dc4b9"/>
+    <text x="573" y="260" class="chip" text-anchor="middle">renewable energy</text>
+    <rect x="490" y="270" width="166" height="20" rx="10" fill="#ffffff" stroke="#9dc4b9"/>
+    <text x="573" y="284" class="chip" text-anchor="middle">California</text>
+
+    <rect x="478" y="306" width="190" height="70" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="573" y="332" class="bt" text-anchor="middle">Text Embeddings</text>
+    <text x="573" y="352" class="bs" text-anchor="middle">transcript chunks -&gt; vectors</text>
+
+    <!-- knowledge graph panel -->
+    <rect x="700" y="104" width="256" height="190" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.8"/>
+    <text x="828" y="126" class="bt" text-anchor="middle">Knowledge Graph</text>
+
+    <path class="gedge" d="M 828 172 L 780 202"/>
+    <path class="gedge" d="M 828 172 L 890 202"/>
+    <path class="gedge" d="M 828 172 L 828 254"/>
+    <text x="774" y="190" class="el" text-anchor="end">works on</text>
+    <text x="884" y="190" class="el">based in</text>
+    <text x="836" y="228" class="el">mentioned in</text>
+
+    <rect x="758" y="140" width="140" height="30" rx="15" fill="#ffffff" stroke="#2f7d6f" stroke-width="1.5"/>
+    <text x="828" y="160" class="nd" text-anchor="middle">Dr. John Smith</text>
+    <rect x="706" y="204" width="126" height="28" rx="14" fill="#ffffff" stroke="#2f7d6f" stroke-width="1.5"/>
+    <text x="769" y="223" class="nd" text-anchor="middle">Renewable Energy</text>
+    <rect x="856" y="204" width="92" height="28" rx="14" fill="#ffffff" stroke="#2f7d6f" stroke-width="1.5"/>
+    <text x="902" y="223" class="nd" text-anchor="middle">California</text>
+    <rect x="776" y="256" width="104" height="26" rx="13" fill="#ffffff" stroke="#2f7d6f" stroke-width="1.5"/>
+    <text x="828" y="274" class="nd" text-anchor="middle">Episode 12</text>
+
+    <rect x="700" y="308" width="256" height="68" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="828" y="334" class="bt" text-anchor="middle">Vector Store</text>
+    <text x="828" y="354" class="bs" text-anchor="middle">chunk embeddings, kept alongside</text>
+
+    <path class="edge" d="M 224 158 L 249 158" marker-end="url(#arw)"/>
+    <path class="edge" d="M 224 288 L 249 288" marker-end="url(#arw)"/>
+    <path class="edge" d="M 446 288 C 462 288 458 234 471 234" marker-end="url(#arw)"/>
+    <path class="edge" d="M 446 288 C 462 288 458 342 471 342" marker-end="url(#arw)"/>
+    <path class="edge" d="M 446 158 L 693 158" marker-end="url(#arw)"/>
+    <path class="edge" d="M 668 234 L 693 234" marker-end="url(#arw)"/>
+    <path class="edge" d="M 668 342 L 693 342" marker-end="url(#arw)"/>
+    <text x="570" y="150" class="note" text-anchor="middle">structured rows load straight in</text>
+
+    <!-- ================= QUERY ================= -->
+    <rect x="24" y="420" width="952" height="260" rx="10" fill="#f7f7f5"/>
+    <text x="44" y="442" class="lane">QUERY TIME</text>
+
+    <rect x="44" y="470" width="280" height="88" rx="8" fill="#f2f1ee" stroke="#b6b3ab" stroke-width="1.4"/>
+    <text x="184" y="504" class="q" text-anchor="middle">"Can you tell me about Dr. John</text>
+    <text x="184" y="524" class="q" text-anchor="middle">Smith's work in renewable energy?"</text>
+    <text x="184" y="544" class="bs" text-anchor="middle">one question, no single episode holds it</text>
+
+    <rect x="356" y="452" width="250" height="88" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="481" y="480" class="bt" text-anchor="middle">Knowledge Graph</text>
+    <text x="481" y="500" class="bs" text-anchor="middle">walks out from the Smith node to</text>
+    <text x="481" y="513" class="bs" text-anchor="middle">the connected facts: what he works</text>
+    <text x="481" y="526" class="bs" text-anchor="middle">on, where, and in which episode</text>
+
+    <rect x="356" y="562" width="250" height="88" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="481" y="590" class="bt" text-anchor="middle">Similarity Search</text>
+    <text x="481" y="610" class="bs" text-anchor="middle">fetches the transcript chunks</text>
+    <text x="481" y="623" class="bs" text-anchor="middle">closest in meaning to the</text>
+    <text x="481" y="636" class="bs" text-anchor="middle">question - his actual words</text>
+
+    <rect x="638" y="507" width="150" height="88" rx="8" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.4"/>
+    <text x="713" y="541" class="bt" text-anchor="middle">Generative</text>
+    <text x="713" y="558" class="bt" text-anchor="middle">Model</text>
+    <text x="713" y="578" class="bs" text-anchor="middle">reasons over both</text>
+
+    <rect x="820" y="507" width="136" height="88" rx="8" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.4"/>
+    <text x="888" y="541" class="bt" text-anchor="middle">Response</text>
+    <text x="888" y="561" class="bs" text-anchor="middle">grounded, sourced,</text>
+    <text x="888" y="574" class="bs" text-anchor="middle">traceable to episodes</text>
+
+    <path class="edge" d="M 324 500 C 340 500 336 496 349 496" marker-end="url(#arw)"/>
+    <path class="edge" d="M 324 528 C 340 528 336 606 349 606" marker-end="url(#arw)"/>
+    <path class="edge" d="M 606 496 C 622 496 618 551 631 551" marker-end="url(#arw)"/>
+    <path class="edge" d="M 606 606 C 622 606 618 551 631 551" marker-end="url(#arw)"/>
+    <path class="edge" d="M 788 551 L 813 551" marker-end="url(#arw)"/>
+
+    <text x="500" y="668" class="note" text-anchor="middle">Graph relationships + relevant text retrieval, combined - which is all Graph RAG really is.</text>
+  </g>
+</svg>

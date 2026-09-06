@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="368" viewBox="0 0 1000 368" role="img" aria-label="Retrieval Augmented Generation in three steps: retrieve, augment, generate">
+  <title>RAG in three steps</title>
+  <desc>Step one, retrieve: find the most relevant content from your documents. Step two, augment: add that content to the LLM prompt as context. Step three, generate: the LLM produces a grounded, accurate answer.</desc>
+
+  <defs>
+    <marker id="arw3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#98968f"/>
+    </marker>
+    <style>
+      .t    { font-family: "Segoe UI", Inter, system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+      .top  { font-size: 13px; fill: #8a8880; letter-spacing: 0.4px; }
+      .num  { font-size: 12px; font-weight: 700; fill: #ffffff; }
+      .head { font-size: 18px; font-weight: 700; fill: #1c1c1a; letter-spacing: 0.2px; }
+      .cap  { font-size: 12.5px; fill: #3d3b37; }
+      .ico  { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="368" fill="#ffffff"/>
+
+  <g class="t">
+    <text x="500" y="34" class="top" text-anchor="middle">Retrieval Augmented Generation, in three steps</text>
+
+    <!-- ===================== 1. RETRIEVE ===================== -->
+    <circle cx="170" cy="62" r="13" fill="#2f7d6f"/>
+    <text x="170" y="66" class="num" text-anchor="middle">1</text>
+    <text x="170" y="96" class="head" text-anchor="middle">Retrieve</text>
+
+    <g transform="translate(170,176)" stroke="#2f7d6f">
+      <rect class="ico" x="-14" y="-44" width="52" height="68" rx="4" fill="#ffffff"/>
+      <rect class="ico" x="-20" y="-39" width="52" height="68" rx="4" fill="#ffffff"/>
+      <rect class="ico" x="-26" y="-34" width="52" height="68" rx="4" fill="#ffffff"/>
+      <rect class="ico" x="-19" y="-27" width="10" height="10" rx="1.5"/>
+      <path class="ico" d="M -4 -22 L 18 -22"/>
+      <path class="ico" d="M -19 -9 L 18 -9"/>
+      <path class="ico" d="M -19 -1 L 18 -1"/>
+      <path class="ico" d="M -19 7 L 8 7"/>
+      <circle class="ico" cx="16" cy="18" r="15" fill="#ffffff"/>
+      <path class="ico" d="M 27 29 L 38 40"/>
+    </g>
+
+    <rect x="40" y="236" width="260" height="94" rx="10" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="170" y="278" class="cap" text-anchor="middle">Find the most relevant</text>
+    <text x="170" y="298" class="cap" text-anchor="middle">content from your documents</text>
+
+    <!-- ===================== 2. AUGMENT ===================== -->
+    <circle cx="500" cy="62" r="13" fill="#4a6fa5"/>
+    <text x="500" y="66" class="num" text-anchor="middle">2</text>
+    <text x="500" y="96" class="head" text-anchor="middle">Augment</text>
+
+    <g transform="translate(500,176)" stroke="#4a6fa5">
+      <rect class="ico" x="-32" y="-38" width="68" height="76" rx="6" fill="#ffffff"/>
+      <path class="ico" d="M -22 -25 L 26 -25"/>
+      <path class="ico" d="M -22 -16 L 26 -16"/>
+      <path class="ico" d="M -22 -7 L 12 -7"/>
+      <rect class="ico" x="-22" y="4" width="48" height="26" rx="3" fill="#dbe6f3"/>
+      <path class="ico" d="M -14 13 L 18 13"/>
+      <path class="ico" d="M -14 21 L 8 21"/>
+      <path class="ico" d="M -62 17 L -36 17"/>
+      <path d="M -40 12 L -30 17 L -40 22 Z" fill="#4a6fa5" stroke="none"/>
+    </g>
+
+    <rect x="370" y="236" width="260" height="94" rx="10" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.6"/>
+    <text x="500" y="278" class="cap" text-anchor="middle">Add that content to the</text>
+    <text x="500" y="298" class="cap" text-anchor="middle">LLM prompt as context</text>
+
+    <!-- ===================== 3. GENERATE ===================== -->
+    <circle cx="830" cy="62" r="13" fill="#8a5a2b"/>
+    <text x="830" y="66" class="num" text-anchor="middle">3</text>
+    <text x="830" y="96" class="head" text-anchor="middle">Generate</text>
+
+    <g transform="translate(830,176)" stroke="#8a5a2b">
+      <rect class="ico" x="-34" y="-38" width="58" height="76" rx="5" fill="#ffffff"/>
+      <path class="ico" d="M -24 -22 L 14 -22"/>
+      <path class="ico" d="M -24 -12 L 14 -12"/>
+      <path class="ico" d="M -24 -2 L 14 -2"/>
+      <path class="ico" d="M -24 8 L 14 8"/>
+      <path class="ico" d="M -24 18 L 0 18"/>
+      <path d="M 30 -43 C 30 -34.55 34.55 -30 43 -30 C 34.55 -30 30 -25.45 30 -17 C 30 -25.45 25.45 -30 17 -30 C 25.45 -30 30 -34.55 30 -43 Z" fill="#8a5a2b" stroke="none"/>
+      <path d="M 41 -12 C 41 -7.45 43.45 -5 48 -5 C 43.45 -5 41 -2.55 41 2 C 41 -2.55 38.55 -5 34 -5 C 38.55 -5 41 -7.45 41 -12 Z" fill="#b58248" stroke="none"/>
+      <path d="M 32 12 C 32 15.9 34.1 18 38 18 C 34.1 18 32 20.1 32 24 C 32 20.1 29.9 18 26 18 C 29.9 18 32 15.9 32 12 Z" fill="#b58248" stroke="none"/>
+    </g>
+
+    <rect x="700" y="236" width="260" height="94" rx="10" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.6"/>
+    <text x="830" y="278" class="cap" text-anchor="middle">LLM produces a grounded,</text>
+    <text x="830" y="298" class="cap" text-anchor="middle">accurate answer</text>
+
+    <!-- ===================== CONNECTORS ===================== -->
+    <path d="M 312 176 L 352 176" fill="none" stroke="#98968f" stroke-width="2.4" marker-end="url(#arw3)"/>
+    <path d="M 642 176 L 682 176" fill="none" stroke="#98968f" stroke-width="2.4" marker-end="url(#arw3)"/>
+  </g>
+</svg>

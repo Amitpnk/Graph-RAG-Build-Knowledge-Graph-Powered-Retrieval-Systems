@@ -98,6 +98,8 @@ $env:GOOGLE_API_KEY = "your-key-here"
 2. **Augment** — take that retrieved content and add it to the LLM prompt as context.
 3. **Generate** — the LLM produces a grounded, accurate answer using that context.
 
+![RAG in three steps: retrieve, augment, generate](assets/rag-three-steps.svg)
+
 Simple and powerful. But there are specific situations where it breaks down.
 
 #### The pipeline, end to end
@@ -356,6 +358,8 @@ every claim has a traceable source. The quality of this output is directly propo
 quality of what the retriever passed in.
 
 #### Walking one query through the whole pipeline
+
+![One query walked through the whole Graph RAG pipeline](assets/graph-rag-walkthrough.svg)
 
 Two types of input go in: **structured data** (say, CSV records) and **unstructured data** (say,
 podcast transcripts). The structured data goes through the transformation step and feeds into the
