@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="848" viewBox="0 0 1000 848" role="img" aria-label="The Module 2 problem statement: podcast transcript question answering">
+  <title>Module 2 problem statement</title>
+  <desc>Arin follows six podcasts producing over twenty hours of audio a week with no time to listen. He wants specific answers that span episodes. Searching transcripts fails because transcripts are messy, answers span episodes, and opinions conflict. The plan is to build with RAG first, find where it breaks, then rebuild with Graph RAG.</desc>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#98968f"/>
+    </marker>
+    <style>
+      .t    { font-family: "Segoe UI", Inter, system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+      .h1   { font-size: 19px; font-weight: 700; fill: #1c1c1a; }
+      .sub  { font-size: 12px; fill: #6f6d67; }
+      .lane { font-size: 11px; font-weight: 700; fill: #6f6d67; letter-spacing: 1.1px; }
+      .note { font-size: 10.5px; fill: #8a8880; font-style: italic; }
+      .stat { font-size: 34px; font-weight: 700; fill: #1c1c1a; }
+      .statl{ font-size: 10.5px; fill: #6f6d67; }
+      .q    { font-size: 11.5px; font-weight: 600; fill: #1c4a42; }
+      .ct   { font-size: 12.5px; font-weight: 700; fill: #1c1c1a; }
+      .cb   { font-size: 10px; fill: #3d3b37; }
+      .ep   { font-size: 10.5px; font-weight: 700; fill: #1c1c1a; }
+      .eps  { font-size: 9.5px; fill: #6f6d67; }
+      .kick { font-size: 13.5px; font-weight: 700; fill: #b3261e; }
+      .qt   { font-size: 13.5px; font-style: italic; fill: #1c1c1a; }
+      .pill { font-size: 9px; font-weight: 700; fill: #ffffff; letter-spacing: 0.8px; }
+      .st   { font-size: 14px; font-weight: 700; fill: #1c1c1a; }
+      .ss   { font-size: 10.5px; fill: #6f6d67; }
+      .edge { fill: none; stroke: #98968f; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="848" fill="#ffffff"/>
+
+  <g class="t">
+    <text x="24" y="38" class="h1">Module 2 - the problem we are going to build for</text>
+    <text x="24" y="58" class="sub">Meet Arin: 26, an AI professional, and completely buried by the podcasts he follows.</text>
+
+    <!-- ============ THE SITUATION ============ -->
+    <rect x="24" y="76" width="952" height="124" rx="10" fill="#f7f7f5"/>
+    <text x="44" y="98" class="lane">THE SITUATION</text>
+    <text x="196" y="98" class="note">He is not lazy. He is overwhelmed.</text>
+
+    <rect x="56" y="110" width="280" height="76" rx="8" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="196" y="152" class="stat" text-anchor="middle">6</text>
+    <text x="196" y="172" class="statl" text-anchor="middle">podcasts followed religiously</text>
+
+    <rect x="360" y="110" width="280" height="76" rx="8" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="500" y="152" class="stat" text-anchor="middle">20+</text>
+    <text x="500" y="172" class="statl" text-anchor="middle">hours of new audio every week</text>
+
+    <rect x="664" y="110" width="280" height="76" rx="8" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="804" y="152" class="stat" text-anchor="middle">0</text>
+    <text x="804" y="172" class="statl" text-anchor="middle">hours available to listen to it</text>
+
+    <!-- ============ THE QUESTIONS ============ -->
+    <rect x="24" y="216" width="952" height="184" rx="10" fill="#f7f7f5"/>
+    <text x="44" y="238" class="lane">THE QUESTIONS HE ACTUALLY HAS</text>
+    <text x="292" y="238" class="note">He does not want to sit and listen. He wants answers.</text>
+
+    <rect x="56" y="252" width="280" height="64" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.4"/>
+    <text x="196" y="280" class="q" text-anchor="middle">"What does Sam Altman think</text>
+    <text x="196" y="298" class="q" text-anchor="middle">about AGI timelines?"</text>
+
+    <rect x="360" y="252" width="280" height="64" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.4"/>
+    <text x="500" y="280" class="q" text-anchor="middle">"Which guests disagree on</text>
+    <text x="500" y="298" class="q" text-anchor="middle">whether AI will take jobs?"</text>
+
+    <rect x="664" y="252" width="280" height="64" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.4"/>
+    <text x="804" y="280" class="q" text-anchor="middle">"What have guests said about</text>
+    <text x="804" y="298" class="q" text-anchor="middle">open-source AI?"</text>
+
+    <rect x="56" y="336" width="240" height="48" rx="8" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="176" y="357" class="ep" text-anchor="middle">Episode 12</text>
+    <text x="176" y="373" class="eps" text-anchor="middle">Sam Altman says one thing</text>
+
+    <rect x="316" y="336" width="240" height="48" rx="8" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="436" y="357" class="ep" text-anchor="middle">Episode 47</text>
+    <text x="436" y="373" class="eps" text-anchor="middle">Yann LeCun says something else</text>
+
+    <text x="580" y="357" class="cb">None of these answers live in a single episode. The full picture is</text>
+    <text x="580" y="373" class="cb">scattered across dozens of hours of audio, with no quick way in.</text>
+
+    <!-- ============ WHY SEARCH ISN'T ENOUGH ============ -->
+    <rect x="24" y="416" width="952" height="196" rx="10" fill="#f7f7f5"/>
+    <text x="44" y="438" class="lane">WHY "JUST SEARCH THE TRANSCRIPT" DOES NOT WORK</text>
+
+    <rect x="56" y="452" width="280" height="132" rx="8" fill="#fdeeed" stroke="#e6b8b4" stroke-width="1.2"/>
+    <text x="72" y="480" class="ct">1. Transcripts are messy</text>
+    <text x="72" y="504" class="cb">This is spoken language: filler words,</text>
+    <text x="72" y="520" class="cb">incomplete sentences, no clean</text>
+    <text x="72" y="536" class="cb">structure. Long, and not easy to query.</text>
+
+    <rect x="360" y="452" width="280" height="132" rx="8" fill="#fdeeed" stroke="#e6b8b4" stroke-width="1.2"/>
+    <text x="376" y="480" class="ct">2. Answers span episodes</text>
+    <text x="376" y="504" class="cb">The question is not what one person</text>
+    <text x="376" y="520" class="cb">said in one episode. It is what several</text>
+    <text x="376" y="536" class="cb">people said across many episodes -</text>
+    <text x="376" y="552" class="cb">and how their views compare.</text>
+
+    <rect x="664" y="452" width="280" height="132" rx="8" fill="#fdeeed" stroke="#e6b8b4" stroke-width="1.2"/>
+    <text x="680" y="480" class="ct">3. Opinions conflict</text>
+    <text x="680" y="504" class="cb">Which is the interesting part.</text>
+    <text x="680" y="520" class="cb">Attribution and context matter as much</text>
+    <text x="680" y="536" class="cb">as the answer: "Sam Altman said X"</text>
+    <text x="680" y="552" class="cb">means nothing without when, and in</text>
+    <text x="680" y="568" class="cb">response to what.</text>
+
+    <text x="500" y="602" class="kick" text-anchor="middle">This is not a search problem. It is a knowledge retrieval problem.</text>
+
+    <!-- ============ THE PROBLEM STATEMENT ============ -->
+    <rect x="24" y="628" width="952" height="76" rx="10" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.8"/>
+    <text x="44" y="654" class="lane">THE PROBLEM STATEMENT</text>
+    <text x="44" y="684" class="qt">"Build a system where I can feed in podcast transcripts, ask any question across all episodes, and get accurate, sourced answers."</text>
+
+    <!-- ============ THE PLAN ============ -->
+    <text x="44" y="740" class="lane">THE PLAN - AND THE PATH THIS MODULE FOLLOWS</text>
+
+    <rect x="48" y="752" width="424" height="80" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.6"/>
+    <rect x="64" y="766" width="52" height="17" rx="8.5" fill="#4a6fa5"/>
+    <text x="90" y="778" class="pill" text-anchor="middle">STEP 1</text>
+    <text x="128" y="781" class="st">Build it with RAG</text>
+    <text x="64" y="808" class="ss">See how far it gets - and expose exactly where it breaks.</text>
+
+    <rect x="528" y="752" width="424" height="80" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <rect x="544" y="766" width="52" height="17" rx="8.5" fill="#2f7d6f"/>
+    <text x="570" y="778" class="pill" text-anchor="middle">STEP 2</text>
+    <text x="608" y="781" class="st">Rebuild with Graph RAG</text>
+    <text x="544" y="808" class="ss">Fix what broke, and build the right solution from scratch.</text>
+
+    <path class="edge" d="M 480 792 L 519 792" marker-end="url(#arw)"/>
+  </g>
+</svg>

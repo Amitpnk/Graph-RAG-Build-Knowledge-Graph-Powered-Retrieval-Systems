@@ -42,6 +42,52 @@ By the end of the course you will be able to:
 | **Module 2 — Hands-on Build** | A deep dive into every component of the Graph RAG pipeline, then putting it all together. |
 | **Capstone** | A working, evaluated system: podcast transcript QA built entirely on Graph RAG from start to finish. |
 
+## Tools Used
+
+| Tool | Role |
+| --- | --- |
+| **LangChain** | Orchestration framework |
+| **Python** | Primary language — all code in notebooks you can follow along with |
+| **OpenAI** | Generation and entity extraction |
+| **Chroma DB** | Vector-based retrieval support |
+| **NetworkX** | Graph store — where all entities, relationships, and traversal live |
+
+## Prerequisites
+
+**Technical**
+
+- Python at an intermediate level
+- Access to Google Colab or a local Jupyter environment
+- An OpenAI API key
+- A Google Gemini API key
+
+**Knowledge**
+
+- Basic understanding of how LLMs work
+- Basic understanding of embeddings and vector search
+- Familiarity with vanilla RAG is a plus, but not mandatory — Module 1 covers what you need
+
+## Getting Started
+
+```bash
+git clone https://github.com/<your-username>/Graph-RAG-Build-Knowledge-Graph-Powered-Retrieval-Systems.git
+cd Graph-RAG-Build-Knowledge-Graph-Powered-Retrieval-Systems
+```
+
+Set your API keys as environment variables before running the notebooks:
+
+```bash
+export OPENAI_API_KEY="your-key-here"
+export GOOGLE_API_KEY="your-key-here"
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:OPENAI_API_KEY = "your-key-here"
+$env:GOOGLE_API_KEY = "your-key-here"
+```
+
 ## Module 1 — Foundations
 
 ### 1.1 What is RAG, and where does it break?
@@ -190,51 +236,203 @@ indexing time, *before* retrieval. The LLM is now reasoning over structure, not 
 Graph RAG adds real power, but also real overhead. Use it when the complexity of your queries
 justifies that cost.
 
-## Tools Used
+### 1.3 The components of a Graph RAG system
 
-| Tool | Role |
+Videos 1.1 and 1.2 covered *why* vanilla RAG breaks and *how* Graph RAG fixes it, conceptually. This
+one goes a level deeper: every component in the pipeline — what it does, where it sits, and how it
+connects to the next step.
+
+![Component map of a Graph RAG system](assets/graph-rag-components.svg)
+
+The map has two halves. On the left is the **indexing path** — where your data comes in, gets
+processed, and gets loaded into the knowledge graph. This runs once, or whenever your data changes.
+On the right is **query time** — what happens every time a user asks a question. Every component
+below lives somewhere on that map.
+
+#### Source data
+
+A Graph RAG system can ingest a wide variety of input types:
+
+- **Documents** — Word files, PDFs, research papers, reports
+- **Structured records** — tables, database exports
+- **Crawled content** — documentation and news from the web
+- **Other formats** — email, transcripts, knowledge-base articles
+
+This variety is one of Graph RAG's real strengths: the richer and more varied your source data, the
+more relationships the knowledge graph can capture *across* content types. The principle is simple —
+**the quality of your source data directly determines the quality of everything that follows.**
+
+#### Pre-processing — two paths in, one kind of output
+
+Source data is prepared in one of two ways depending on its type:
+
+- **Structured data → data transformation.** The schema is preserved and used to identify what type
+  of entity each field or row represents, keeping that structure intact for the graph.
+- **Unstructured data → chunking model.** Long documents are split into smaller, manageable pieces.
+  Each chunk carries a **reference back to its source document**, which is what enables provenance
+  later in the pipeline.
+
+Both paths produce the same thing: processable units of content, ready for the next two parallel
+steps.
+
+#### Named entity extraction and resolution
+
+This is the step that makes Graph RAG fundamentally different from vanilla RAG. A generative model
+reads each chunk and identifies **entities, relations, and attributes**:
+
+- Entities become **nodes** in the graph.
+- Relations become **edges**.
+- Attributes become **properties** attached to those nodes.
+
+On top of raw extraction, **entity resolution** cleans up and resolves what it finds:
+
+- *Apple* the company and *Apple* the fruit are resolved correctly from context.
+- *Google*, *Google Inc.*, and *Alphabet* are merged into a single node instead of three duplicates.
+- Every entity is tagged with the source document it came from, giving you a full **provenance
+  trail**.
+
+Without this step you have chunks. With it, you have a knowledge structure.
+
+#### Text embedding model
+
+While entity resolution is running, the same chunks also go through a **text embedding model in
+parallel**. Each chunk is converted into a high-dimensional vector capturing its semantic meaning,
+and those vectors are stored alongside the knowledge graph so they can be retrieved at query time via
+similarity search.
+
+The two tracks run in parallel because they capture different things:
+
+| Track | Captures |
 | --- | --- |
-| **LangChain** | Orchestration framework |
-| **Python** | Primary language — all code in notebooks you can follow along with |
-| **OpenAI** | Generation and entity extraction |
-| **Chroma DB** | Vector-based retrieval support |
-| **NetworkX** | Graph store — where all entities, relationships, and traversal live |
+| Entity resolution | Structure — the relationships between entities |
+| Embeddings | Language — semantic similarity between passages |
 
-## Prerequisites
+You need both. This is the same embedding step as vanilla RAG; Graph RAG keeps it intact and adds the
+entity layer on top.
 
-**Technical**
+#### The knowledge graph — the core
 
-- Python at an intermediate level
-- Access to Google Colab or a local Jupyter environment
-- An OpenAI API key
-- A Google Gemini API key
+Everything before this point builds it; everything after uses it. The knowledge graph holds four
+things:
 
-**Knowledge**
+- **Nodes** — the extracted entities
+- **Edges** — the typed relationships between those entities
+- **Vectors** — the embeddings, stored alongside the relevant nodes
+- **Provenance** — source document references attached to every node and every edge
 
-- Basic understanding of how LLMs work
-- Basic understanding of embeddings and vector search
-- Familiarity with vanilla RAG is a plus, but not mandatory — Module 1 covers what you need
+The key insight: **the graph and the vectors live together in one place.** At query time the system
+can retrieve connected entities via graph traversal *and* semantically similar chunks via vector
+search from the same store, in a single step. The retrieval is unified.
 
-## Getting Started
+For the build phase of this course, the graph store is **NetworkX** — lightweight and easy to work
+with for constructing and storing a knowledge graph in Python.
 
-```bash
-git clone https://github.com/<your-username>/Graph-RAG-Build-Knowledge-Graph-Powered-Retrieval-Systems.git
-cd Graph-RAG-Build-Knowledge-Graph-Powered-Retrieval-Systems
-```
+#### The retriever
 
-Set your API keys as environment variables before running the notebooks:
+At query time, the retriever's job is to find the most relevant context from the knowledge graph. Two
+things happen in parallel:
 
-```bash
-export OPENAI_API_KEY="your-key-here"
-export GOOGLE_API_KEY="your-key-here"
-```
+- **Graph retrieval** identifies the entities in the user's query and traverses the knowledge graph,
+  following edges outward from those entities. It returns connected entities and the relationships
+  between them.
+- **Vector retrieval** embeds the user query and searches for the most semantically similar chunks.
+  It returns the passages most likely to contain the answer.
 
-On Windows PowerShell:
+The combined output — connected entities *plus* similar passages — is what gets passed to the
+generator as documents and context. This combination is what makes Graph RAG answers both
+**structurally grounded** and **linguistically rich**.
 
-```powershell
-$env:OPENAI_API_KEY = "your-key-here"
-$env:GOOGLE_API_KEY = "your-key-here"
-```
+#### The generator
+
+The final component. The generative model receives the user's original query and the combined graph
+and vector results, then does three things:
+
+1. Reasons over both the graph structure and the supporting text passages together.
+2. Compiles the final answer, grounded in the retrieved evidence.
+3. Returns a complete response back to the application layer.
+
+The LLM is not guessing — it is *assembling* an answer from structured retrieved evidence, where
+every claim has a traceable source. The quality of this output is directly proportional to the
+quality of what the retriever passed in.
+
+#### Walking one query through the whole pipeline
+
+Two types of input go in: **structured data** (say, CSV records) and **unstructured data** (say,
+podcast transcripts). The structured data goes through the transformation step and feeds into the
+knowledge graph. At the same time, the transcript is broken into chunks, and two things happen in
+parallel — one path extracts key entities and relationships (*Dr. John Smith*, *renewable energy*,
+*California*) to enrich the knowledge graph; the other converts the transcript chunks into embeddings
+for similarity-based retrieval.
+
+Then a user asks: *"Can you tell me about Dr. John Smith's work in renewable energy?"* The system uses
+the knowledge graph to understand the connected facts, uses similarity search to fetch the most
+relevant transcript chunks, and passes both to the generative model to compose the final response.
+
+In simple terms: **Graph RAG combines graph relationships and relevant text retrieval to produce a
+more grounded answer.**
+
+## Module 2 — Hands-on Build
+
+Module 1 was theory. From here on, everything is hands-on — and to keep it concrete, the whole module
+follows one character with one problem.
+
+### 2.1 The problem statement
+
+![The Module 2 problem statement](assets/problem-statement.svg)
+
+#### Meet Arin
+
+Arin is 26, works as an AI professional, and follows six podcasts religiously — Lex Fridman, My First
+Million, Huberman Lab, and a few others. New episodes drop every week, each two or three hours long.
+He wants to stay on top of what guests are saying about AI, startups, and technology, but there is
+simply not enough time to listen to everything.
+
+**Six podcasts. 20+ hours of content every week. Zero time to listen to all of it.** He's not lazy —
+he's overwhelmed.
+
+#### What he actually wants
+
+Arin doesn't want to sit and listen. He wants **answers**, to specific questions:
+
+- *"What does Sam Altman think about AGI timelines?"*
+- *"Which guests disagree on whether AI will take jobs?"*
+- *"What have guests said about open-source AI?"*
+
+None of these answers live in one episode. Sam Altman said something in episode 12; Yann LeCun said
+something different in episode 47. The full picture is scattered across dozens of hours of audio, and
+there is no way to get at it quickly.
+
+#### Why "just search the transcripts" isn't enough
+
+1. **Transcripts are long and messy.** This is spoken language — filler words, incomplete sentences,
+   no clean structure. Not easy to query.
+2. **Answers span episodes.** The question isn't *what did one person say in one episode*. It's *what
+   did multiple people say across multiple episodes, and how do their views compare?*
+3. **Opinions conflict** — and that's the interesting part. **Attribution and context matter as much
+   as the answer itself.** Knowing that Sam Altman said X means nothing if you don't know *when* he
+   said it, and *in response to what*.
+
+> **This is not a search problem. This is a knowledge retrieval problem.**
+
+#### The problem statement
+
+Arin already has the transcripts. What he needs is a system he can query:
+
+> **Build a system where I can feed in podcast transcripts, ask any question across all episodes, and
+> get accurate, sourced answers.**
+
+#### The plan
+
+| | |
+| --- | --- |
+| **Step 1 — Build it with RAG** | See how far it gets, and where it breaks. |
+| **Step 2 — Rebuild with Graph RAG** | Fix what broke. |
+
+This is exactly the path this module follows: start with the simpler solution, expose its limits on
+these specific problems, then build the right solution from scratch.
+
+Next up, Arin builds his first solution using RAG. The code is clean and the output looks decent at
+first glance — but something is missing.
 
 ## License
 

@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="888" viewBox="0 0 1040 888" role="img" aria-label="Component map of a Graph RAG system: the indexing path, query time, and the shared core store">
+  <title>Graph RAG component map</title>
+  <desc>The indexing path runs source data through a chunking model or a data transformation step, then in parallel through named entity extraction and resolution and a text embedding model. Query time runs graph retrieval and vector retrieval together into a combined context, then a generator and a response. Both paths meet at the core: a knowledge graph holding nodes, edges, vectors, and provenance.</desc>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#98968f"/>
+    </marker>
+    <style>
+      .t    { font-family: "Segoe UI", Inter, system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+      .h1   { font-size: 19px; font-weight: 700; fill: #1c1c1a; }
+      .sub  { font-size: 12px; fill: #6f6d67; }
+      .lane { font-size: 11px; font-weight: 700; fill: #6f6d67; letter-spacing: 1.1px; }
+      .note { font-size: 10px; fill: #8a8880; font-style: italic; }
+      .bt   { font-size: 12.5px; font-weight: 700; fill: #1c1c1a; }
+      .bs   { font-size: 9.8px; fill: #6f6d67; }
+      .chip { font-size: 9.5px; fill: #3d3b37; }
+      .edge { fill: none; stroke: #98968f; stroke-width: 1.6; }
+      .elbl { font-size: 9.5px; fill: #8a8880; font-style: italic; }
+      .pill { font-size: 9px; font-weight: 700; fill: #ffffff; letter-spacing: 0.8px; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1040" height="888" fill="#ffffff"/>
+
+  <g class="t">
+    <text x="24" y="38" class="h1">Components of a Graph RAG system - the full map</text>
+    <text x="24" y="58" class="sub">Left: the indexing path, run once or whenever your data changes. Right: query time, run on every question. Both meet at one shared store.</text>
+
+    <!-- ================= INDEXING PANEL ================= -->
+    <rect x="24" y="76" width="576" height="624" rx="10" fill="#f7f7f5"/>
+    <text x="44" y="98" class="lane">INDEXING PATH</text>
+    <text x="44" y="114" class="note">Runs once, or whenever your data changes. Two tracks run in parallel below:</text>
+    <text x="44" y="128" class="note">entity resolution captures structure; embeddings capture language. You need both.</text>
+
+    <!-- source data -->
+    <rect x="44" y="140" width="536" height="130" rx="8" fill="#f2f1ee" stroke="#b6b3ab" stroke-width="1.4"/>
+    <text x="312" y="166" class="bt" text-anchor="middle">Source Data</text>
+    <text x="312" y="182" class="bs" text-anchor="middle">the quality of your source data determines the quality of everything that follows</text>
+    <rect x="56" y="194" width="254" height="30" rx="6" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="183" y="213" class="chip" text-anchor="middle">Documents - PDF, Word, papers, reports</text>
+    <rect x="322" y="194" width="254" height="30" rx="6" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="449" y="213" class="chip" text-anchor="middle">Structured records - tables, DB exports</text>
+    <rect x="56" y="230" width="254" height="30" rx="6" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="183" y="249" class="chip" text-anchor="middle">Crawled content - documentation, news</text>
+    <rect x="322" y="230" width="254" height="30" rx="6" fill="#ffffff" stroke="#dcd9d2"/>
+    <text x="449" y="249" class="chip" text-anchor="middle">Email, transcripts, knowledge-base articles</text>
+
+    <!-- pre-processing -->
+    <rect x="44" y="306" width="258" height="88" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="173" y="332" class="bt" text-anchor="middle">Chunking Model</text>
+    <text x="173" y="352" class="bs" text-anchor="middle">splits long documents into smaller,</text>
+    <text x="173" y="366" class="bs" text-anchor="middle">manageable pieces - each chunk keeps</text>
+    <text x="173" y="380" class="bs" text-anchor="middle">a reference back to its source document</text>
+
+    <rect x="322" y="306" width="258" height="88" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="451" y="332" class="bt" text-anchor="middle">Data Transformation</text>
+    <text x="451" y="352" class="bs" text-anchor="middle">the schema is preserved and used to</text>
+    <text x="451" y="366" class="bs" text-anchor="middle">identify what entity type each field or</text>
+    <text x="451" y="380" class="bs" text-anchor="middle">row represents - structure stays intact</text>
+
+    <path class="edge" d="M 173 270 L 173 299" marker-end="url(#arw)"/>
+    <path class="edge" d="M 451 270 L 451 299" marker-end="url(#arw)"/>
+    <text x="182" y="290" class="elbl">unstructured</text>
+    <text x="460" y="290" class="elbl">structured</text>
+
+    <!-- parallel extraction -->
+    <rect x="44" y="430" width="232" height="112" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="160" y="454" class="bt" text-anchor="middle">Named Entity Extraction</text>
+    <text x="160" y="470" class="bt" text-anchor="middle">+ Resolution</text>
+    <text x="160" y="490" class="bs" text-anchor="middle">entities -&gt; nodes, relations -&gt; edges,</text>
+    <text x="160" y="504" class="bs" text-anchor="middle">attributes -&gt; node properties</text>
+    <text x="160" y="521" class="bs" text-anchor="middle">Apple the company vs. Apple the fruit;</text>
+    <text x="160" y="535" class="bs" text-anchor="middle">Google = Google Inc. = Alphabet</text>
+    <rect x="216" y="421" width="42" height="17" rx="8.5" fill="#2f7d6f"/>
+    <text x="237" y="433" class="pill" text-anchor="middle">NEW</text>
+
+    <rect x="296" y="430" width="232" height="112" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="412" y="454" class="bt" text-anchor="middle">Text Embedding Model</text>
+    <text x="412" y="474" class="bs" text-anchor="middle">each chunk becomes a high-</text>
+    <text x="412" y="488" class="bs" text-anchor="middle">dimensional vector capturing its</text>
+    <text x="412" y="502" class="bs" text-anchor="middle">semantic meaning</text>
+    <text x="412" y="521" class="bs" text-anchor="middle">the same step as vanilla RAG -</text>
+    <text x="412" y="535" class="bs" text-anchor="middle">Graph RAG keeps it intact</text>
+
+    <path class="edge" d="M 173 394 C 173 412 160 405 160 423" marker-end="url(#arw)"/>
+    <path class="edge" d="M 173 394 C 173 412 412 405 412 423" marker-end="url(#arw)"/>
+
+    <!-- into the core -->
+    <path class="edge" d="M 160 542 L 160 709" marker-end="url(#arw)"/>
+    <path class="edge" d="M 412 542 L 412 709" marker-end="url(#arw)"/>
+    <path class="edge" d="M 451 394 L 451 410 L 554 410 L 554 709" marker-end="url(#arw)"/>
+    <text x="546" y="600" class="elbl" text-anchor="end">structured rows</text>
+    <text x="546" y="614" class="elbl" text-anchor="end">load straight in</text>
+
+    <!-- ================= QUERY PANEL ================= -->
+    <rect x="616" y="76" width="400" height="624" rx="10" fill="#f7f7f5"/>
+    <text x="636" y="98" class="lane">QUERY TIME</text>
+    <text x="636" y="114" class="note">Runs on every question. Graph traversal and vector</text>
+    <text x="636" y="128" class="note">search run together, then feed one generator.</text>
+
+    <rect x="636" y="140" width="330" height="60" rx="8" fill="#f2f1ee" stroke="#b6b3ab" stroke-width="1.4"/>
+    <text x="801" y="166" class="bt" text-anchor="middle">User Query</text>
+    <text x="801" y="183" class="bs" text-anchor="middle">"Tell me about Dr. John Smith's work in renewable energy"</text>
+
+    <rect x="636" y="224" width="330" height="92" rx="8" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.6"/>
+    <text x="801" y="250" class="bt" text-anchor="middle">Graph Retrieval</text>
+    <text x="801" y="270" class="bs" text-anchor="middle">identifies the entities named in the query</text>
+    <text x="801" y="284" class="bs" text-anchor="middle">traverses the knowledge graph outward from them</text>
+    <text x="801" y="298" class="bs" text-anchor="middle">returns connected entities and their relationships</text>
+
+    <rect x="636" y="336" width="330" height="92" rx="8" fill="#eef3f9" stroke="#4a6fa5" stroke-width="1.4"/>
+    <text x="801" y="362" class="bt" text-anchor="middle">Vector Retrieval</text>
+    <text x="801" y="382" class="bs" text-anchor="middle">embeds the user query</text>
+    <text x="801" y="396" class="bs" text-anchor="middle">similarity search over the stored chunk vectors</text>
+    <text x="801" y="410" class="bs" text-anchor="middle">returns the passages likeliest to hold the answer</text>
+
+    <rect x="636" y="448" width="330" height="60" rx="8" fill="#f2f1ee" stroke="#8a8880" stroke-width="1.4"/>
+    <text x="801" y="474" class="bt" text-anchor="middle">Combined Context</text>
+    <text x="801" y="491" class="bs" text-anchor="middle">connected entities + similar passages, as documents</text>
+
+    <rect x="636" y="536" width="330" height="92" rx="8" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.4"/>
+    <text x="801" y="562" class="bt" text-anchor="middle">Generator</text>
+    <text x="801" y="582" class="bs" text-anchor="middle">reasons over graph structure and text together</text>
+    <text x="801" y="596" class="bs" text-anchor="middle">compiles an answer grounded in retrieved evidence</text>
+    <text x="801" y="610" class="bs" text-anchor="middle">not guessing - assembling, with traceable sources</text>
+
+    <rect x="636" y="648" width="330" height="48" rx="8" fill="#faf2e8" stroke="#8a5a2b" stroke-width="1.4"/>
+    <text x="801" y="670" class="bt" text-anchor="middle">Response</text>
+    <text x="801" y="686" class="bs" text-anchor="middle">returned to the application layer</text>
+
+    <path class="edge" d="M 801 200 L 801 212 L 624 212 L 624 270 L 630 270" marker-end="url(#arw)"/>
+    <path class="edge" d="M 624 212 L 624 382 L 630 382" marker-end="url(#arw)"/>
+    <path class="edge" d="M 966 270 L 988 270 L 988 478 L 972 478" marker-end="url(#arw)"/>
+    <path class="edge" d="M 966 382 L 988 382"/>
+    <path class="edge" d="M 801 508 L 801 529" marker-end="url(#arw)"/>
+    <path class="edge" d="M 801 628 L 801 641" marker-end="url(#arw)"/>
+
+    <!-- ================= THE CORE ================= -->
+    <rect x="24" y="716" width="992" height="140" rx="10" fill="#ecf5f2" stroke="#2f7d6f" stroke-width="1.8"/>
+    <text x="44" y="740" class="lane">THE CORE - KNOWLEDGE GRAPH + VECTOR STORE</text>
+    <text x="392" y="740" class="note">graph and vectors live together in one place, so both retrievers above read from here in a single step. Built with NetworkX.</text>
+
+    <rect x="44" y="756" width="228" height="84" rx="8" fill="#ffffff" stroke="#9dc4b9"/>
+    <text x="158" y="786" class="bt" text-anchor="middle">Nodes</text>
+    <text x="158" y="806" class="bs" text-anchor="middle">the extracted entities</text>
+
+    <rect x="288" y="756" width="228" height="84" rx="8" fill="#ffffff" stroke="#9dc4b9"/>
+    <text x="402" y="786" class="bt" text-anchor="middle">Edges</text>
+    <text x="402" y="806" class="bs" text-anchor="middle">typed relationships between them</text>
+
+    <rect x="532" y="756" width="228" height="84" rx="8" fill="#ffffff" stroke="#9dc4b9"/>
+    <text x="646" y="786" class="bt" text-anchor="middle">Vectors</text>
+    <text x="646" y="806" class="bs" text-anchor="middle">chunk embeddings, stored</text>
+    <text x="646" y="820" class="bs" text-anchor="middle">alongside the relevant nodes</text>
+
+    <rect x="776" y="756" width="228" height="84" rx="8" fill="#ffffff" stroke="#9dc4b9"/>
+    <text x="890" y="786" class="bt" text-anchor="middle">Provenance</text>
+    <text x="890" y="806" class="bs" text-anchor="middle">source document references on</text>
+    <text x="890" y="820" class="bs" text-anchor="middle">every node and every edge</text>
+  </g>
+</svg>
